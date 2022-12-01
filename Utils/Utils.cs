@@ -11,9 +11,5 @@
 		{
 			return System.IO.File.ReadAllLines("../../../Data"+(isTest?"/Test/":"/")+fileName);
 		}
-
-
-	
-		
 		
 	}

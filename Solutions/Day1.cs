@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-public class Day1
+public static class Day1
 {
 	public static void SolveTaskOne()
 	{
@@ -31,7 +31,7 @@ public class Day1
 		Console.WriteLine(highestCount);
 	}
 
-	static int[] threeHighest = {0, 0, 0};
+	private static readonly int[] ThreeHighest = {0, 0, 0};
 
 	public static void SolveTaskTwo()
 	{
@@ -55,16 +55,16 @@ public class Day1
 			CheckIfTopThree(ref currentCount);
 		}
 
-		Console.WriteLine(threeHighest.Sum());
+		Console.WriteLine(ThreeHighest.Sum());
 	}
 
 	private static void CheckIfTopThree(ref int currentCount)
 	{
-		for (int i = 0; i < threeHighest.Length; i++)
+		for (int i = 0; i < ThreeHighest.Length; i++)
 		{
-			if (currentCount > threeHighest[i])
+			if (currentCount > ThreeHighest[i])
 			{
-				(threeHighest[i], currentCount) = (currentCount, threeHighest[i]);
+				(ThreeHighest[i], currentCount) = (currentCount, ThreeHighest[i]);
 			}
 		}
 
