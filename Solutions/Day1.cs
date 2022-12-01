@@ -2,98 +2,99 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public static class Day1
-{
-	private static readonly int[] ThreeHighest = {0, 0, 0};
 
-	public static void SolveTaskOne()
+	public static class Day1
 	{
-		string[] data = Utils.GetDataFromFileAsLines("day1.txt");
+		private static readonly int[] ThreeHighest = {0, 0, 0};
 
-		int highestCount = -1;
-
-
-		int currentCount = 0;
-		foreach (string line in data)
+		public static void SolveTaskOne()
 		{
-			if (line == "")
-			{
-				if (currentCount > highestCount)
-					highestCount = currentCount;
+			string[] data = Utils.GetDataFromFileAsLines("day1.txt");
 
-				currentCount = 0;
-			}
-			else
+			int highestCount = -1;
+
+
+			int currentCount = 0;
+			foreach (string line in data)
 			{
-				currentCount += int.Parse(line);
+				if (line == "")
+				{
+					if (currentCount > highestCount)
+						highestCount = currentCount;
+
+					currentCount = 0;
+				}
+				else
+				{
+					currentCount += int.Parse(line);
+				}
 			}
+
+			if (currentCount > highestCount)
+				highestCount = currentCount;
+
+			Console.WriteLine(highestCount);
 		}
 
-		if (currentCount > highestCount)
-			highestCount = currentCount;
 
-		Console.WriteLine(highestCount);
-	}
-
-
-	//An Improved attempt at the Task 
-	public static int CombinedSolver(int numElves)
-	{
-		List<int> values = new List<int>();
-
-		int current = 0;
-		foreach (string line in Utils.GetDataFromFileAsLines("day1.txt")) //Get all the data and iterate through each line
+		//An Improved attempt at the Task 
+		public static int CombinedSolver(int numElves,IEnumerable<string> data)
 		{
-			if (int.TryParse(line, out int val)) //If its a number, add it to the current total
-			{
-				current += val;
-				continue; //Break out of the iteration
-			}
+			List<int> values = new List<int>();
 
-			values.Add(current); //Add to list
-			current = 0;
+			int current = 0;
+			foreach (string line in data ) //Get all the data and iterate through each line
+			{
+				if (int.TryParse(line, out int val)) //If its a number, add it to the current total
+				{
+					current += val;
+					continue; //Break out of the iteration
+				}
+
+				values.Add(current); //Add to list
+				current = 0;
+			}
+			if(current>0)
+				values.Add(current);
+
+			return values.OrderByDescending(value => value).Take(numElves).Sum(); //Return the top X values for the list
 		}
 
-		values.Sort(); 
-		values.Reverse(); 
-		return values.GetRange(0, numElves).Sum(); //Return the top X values for the list
-	}
-
-	public static void SolveTaskTwo()
-	{
-		string[] data = Utils.GetDataFromFileAsLines("day1.txt");
-
-		int currentCount = 0;
-		foreach (string line in data)
+		public static void SolveTaskTwo()
 		{
-			if (line == "")
+			string[] data = Utils.GetDataFromFileAsLines("day1.txt");
+
+			int currentCount = 0;
+			foreach (string line in data)
+			{
+				if (line == "")
+				{
+					CheckIfTopThree(ref currentCount);
+				}
+				else
+				{
+					currentCount += int.Parse(line);
+				}
+			}
+
+			if (currentCount > 0) //Check last line
 			{
 				CheckIfTopThree(ref currentCount);
 			}
-			else
-			{
-				currentCount += int.Parse(line);
-			}
+
+			Console.WriteLine(ThreeHighest.Sum());
 		}
 
-		if (currentCount > 0) //Check last line
+		private static void CheckIfTopThree(ref int currentCount)
 		{
-			CheckIfTopThree(ref currentCount);
-		}
-
-		Console.WriteLine(ThreeHighest.Sum());
-	}
-
-	private static void CheckIfTopThree(ref int currentCount)
-	{
-		for (int i = 0; i < ThreeHighest.Length; i++)
-		{
-			if (currentCount > ThreeHighest[i])
+			for (int i = 0; i < ThreeHighest.Length; i++)
 			{
-				(ThreeHighest[i], currentCount) = (currentCount, ThreeHighest[i]);
+				if (currentCount > ThreeHighest[i])
+				{
+					(ThreeHighest[i], currentCount) = (currentCount, ThreeHighest[i]);
+				}
 			}
-		}
 
-		currentCount = 0;
+			currentCount = 0;
+		}
 	}
-}
