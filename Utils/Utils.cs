@@ -1,15 +1,15 @@
-﻿
-	public static class Utils
-	{
+﻿using System.Collections.Generic;
+using System.IO;
 
-		public static string GetDataFromFile(string fileName, bool isTest =false)
-		{
-			return System.IO.File.ReadAllText("../../../Data"+(isTest?"/Test/":"/")+fileName);
-		}
-		
-		public static string[] GetDataFromFileAsLines(string fileName, bool isTest = false)
-		{
-			return System.IO.File.ReadAllLines("../../../Data"+(isTest?"/Test/":"/")+fileName);
-		}
-		
+public static class Utils
+{
+	public static string GetDataFromFile(string fileName, bool isTest = false)
+	{
+		return File.ReadAllText("../../../Data" + (isTest ? "/Test/" : "/") + fileName);
 	}
+
+	public static IEnumerable<string> GetDataFromFileAsLines(string fileName, bool isTest = false)
+	{
+		return File.ReadAllLines("../../../Data" + (isTest ? "/Test/" : "/") + fileName);
+	}
+}
