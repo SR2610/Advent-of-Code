@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 public static class Day1
 {
+	private static readonly int[] ThreeHighest = {0, 0, 0};
+
 	public static void SolveTaskOne()
 	{
 		string[] data = Utils.GetDataFromFileAsLines("day1.txt");
@@ -25,13 +28,36 @@ public static class Day1
 				currentCount += int.Parse(line);
 			}
 		}
+
 		if (currentCount > highestCount)
 			highestCount = currentCount;
 
 		Console.WriteLine(highestCount);
 	}
 
-	private static readonly int[] ThreeHighest = {0, 0, 0};
+
+	//An Improved attempt at the Task 
+	public static int CombinedSolver(int numElves)
+	{
+		List<int> values = new List<int>();
+
+		int current = 0;
+		foreach (string line in Utils.GetDataFromFileAsLines("day1.txt")) //Get all the data and iterate through each line
+		{
+			if (int.TryParse(line, out int val)) //If its a number, add it to the current total
+			{
+				current += val;
+				continue; //Break out of the iteration
+			}
+
+			values.Add(current); //Add to list
+			current = 0;
+		}
+
+		values.Sort(); 
+		values.Reverse(); 
+		return values.GetRange(0, numElves).Sum(); //Return the top X values for the list
+	}
 
 	public static void SolveTaskTwo()
 	{
