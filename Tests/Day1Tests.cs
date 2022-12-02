@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Advent_2022.Solutions;
+using NUnit.Framework;
 
 namespace Advent_2022.Tests
 {
