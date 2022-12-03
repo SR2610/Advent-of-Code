@@ -7,22 +7,12 @@ namespace Advent_2022.Solutions
     {
         public static int SolvePartOne(IEnumerable<string> data)
         {
-            int total = 0;
-            foreach (string line in data)
-            {
-                string compartmentOne = line[..(line.Length / 2)];
-                string compartmentTwo = line[(line.Length / 2)..];
-                string sharedLetters = "";
-                foreach (char checkAgainst in compartmentOne.SelectMany(character =>
-                             compartmentTwo.Where(checkAgainst => checkAgainst == character)
-                                 .Where(checkAgainst => !sharedLetters.Contains(checkAgainst))))
-                    sharedLetters += checkAgainst;
-
-                total += sharedLetters.Sum(GetLetterValue);
-            }
-
-
-            return total;
+            return (from line in data
+                let compartmentOne = line[..(line.Length / 2)]
+                let compartmentTwo = line[(line.Length / 2)..]
+                select GetSharedCharacters(compartmentOne, compartmentTwo)
+                into sharedLetters
+                select sharedLetters.Sum(GetLetterValue)).Sum();
         }
 
 
@@ -36,11 +26,7 @@ namespace Advent_2022.Solutions
                 currentGroupSize++;
                 groupBackpacks.Add(line);
                 if (currentGroupSize != 3) continue;
-                string sharedLetters = "";
-                foreach (char checkAgainst in groupBackpacks[0].SelectMany(character =>
-                             groupBackpacks[1].Where(checkAgainst =>
-                                 character == checkAgainst && !sharedLetters.Contains(checkAgainst))))
-                    sharedLetters += checkAgainst;
+                string sharedLetters = GetSharedCharacters(groupBackpacks[0], groupBackpacks[1]);
 
                 foreach (char sharedLetter in sharedLetters.Where(sharedLetter =>
                              groupBackpacks[2].Contains(sharedLetter)))
@@ -57,6 +43,19 @@ namespace Advent_2022.Solutions
             return total;
         }
 
+
+        private static string GetSharedCharacters(string a, string b)
+        {
+            string result = "";
+
+            foreach (char letterA in from letterA in a
+                     from letterB in b
+                     where letterA == letterB
+                     where !result.Contains(letterA)
+                     select letterA) result += letterA;
+
+            return result;
+        }
 
         private static int GetLetterValue(char c)
         {
