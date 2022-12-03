@@ -8,13 +8,13 @@ namespace Advent_2022.Tests
         [Test]
         public void PartOneTest()
         {
-           Assert.AreEqual(157, Day3.SolvePartOne(Utils.GetDataFromFileAsLines("day3.txt", true)));
+            Assert.AreEqual(157, Day3.SolvePartOne(Utils.GetDataFromFileAsLines("day3.txt", true)));
         }
 
         [Test]
         public void PartTwoTest()
         {
-            //Assert.AreEqual(12, Day2.SolvePartTwo(Utils.GetDataFromFileAsLines("day2.txt", true)));
+            Assert.AreEqual(70, Day3.SolvePartTwo(Utils.GetDataFromFileAsLines("day3.txt", true)));
         }
     }
 }
