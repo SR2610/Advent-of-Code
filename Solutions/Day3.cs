@@ -49,13 +49,9 @@ namespace Advent_2022.Solutions
             string result = "";
 
             foreach (char letterA in a)
-            {
-                foreach (char letterB in b.Where(letterB => letterA == letterB && !result.Contains(letterA)))
-                {
-                    result += letterB;
-                }
-            }
-            
+            foreach (char letterB in b.Where(letterB => letterA == letterB && !result.Contains(letterA)))
+                result += letterB;
+
             return result;
         }
 
