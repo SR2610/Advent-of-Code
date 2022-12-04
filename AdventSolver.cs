@@ -11,6 +11,8 @@ internal static class AdventSolver
         Console.WriteLine("Day 2 Part 2: " + Day2.SolvePartTwo(Utils.GetDataFromFileAsLines("day2.txt")));
         Console.WriteLine("Day 3 Part 1: " + Day3.SolvePartOne(Utils.GetDataFromFileAsLines("day3.txt")));
         Console.WriteLine("Day 3 Part 2: " + Day3.SolvePartTwo(Utils.GetDataFromFileAsLines("day3.txt")));
+        Console.WriteLine("Day 4 Part 1: " + Day4.SolvePartOne(Utils.GetDataFromFileAsLines("day4.txt")));
+        Console.WriteLine("Day 4 Part 2: " + Day4.SolvePartTwo(Utils.GetDataFromFileAsLines("day4.txt")));
         Console.Read();
     }
 }
