@@ -7,30 +7,16 @@ namespace Advent_2022.Solutions
 	{
 		public static int CheckForDistinctIndex(string data, int requiredDistinct)
 		{
-			int total = 0;
-
-			Queue<char> sequence = new Queue<char>();
-
-
-			foreach (char character in data)
+			for (int i = 0; i < data.Length; i++)
 			{
-				total++;
-				sequence.Enqueue(character);
-				if (sequence.Count == requiredDistinct)
+				string check = data.Substring(i, requiredDistinct);
+				if (requiredDistinct == check.Distinct().Count())
 				{
-					List<char> list = sequence.ToList();
-
-					if (list.Count == list.Distinct().Count())
-					{
-						break;
-					}
-
-					sequence.Dequeue();
+					return i+requiredDistinct;
 				}
+				
 			}
-
-
-			return total;
+			return -1;
 		}
 	}
 }
