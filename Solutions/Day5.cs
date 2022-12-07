@@ -32,7 +32,7 @@ namespace Advent_2022.Solutions
 						{
 							hasGotStacks = true;
 
-							int i = 0;
+							int i;
 							for (i = 0; i < stacks.Count; i++)
 							{
 								Stack<char> t = stacks[i];
