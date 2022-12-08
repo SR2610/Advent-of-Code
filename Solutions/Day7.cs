@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Advent_2022.Solutions
@@ -9,7 +10,7 @@ namespace Advent_2022.Solutions
 
 		private static void SetupFileSystem(IEnumerable<string> data)
 		{
-			Root = new DiskContent(-1, null, "root");
+			Root = new DiskContent(-1, null, "/");
 			DiskContent currentDirectory = null;
 
 			foreach (string command in data)
@@ -32,11 +33,28 @@ namespace Advent_2022.Solutions
 						                   };
 						break;
 					case "dir":
-						currentDirectory?.AddContent(-1, splitCommand[1]);
+						currentDirectory?.AddContent(-1, splitCommand[1] + " (dir)");
 						break;
 					default:
-						currentDirectory?.AddContent(int.Parse(splitCommand[0]), splitCommand[1]);
+						currentDirectory?.AddContent(int.Parse(splitCommand[0]), splitCommand[1]+(" (file, size="+splitCommand[0]+")"));
 						break;
+				}
+			}
+		}
+
+
+		private static void PrintOutFolder(DiskContent folder,int depth)
+		{
+			Console.WriteLine(string.Concat(Enumerable.Repeat(" ", depth))+"-" + folder.contentName);
+			foreach (DiskContent content in folder.content)
+			{
+				if (content.fileSize == -1)
+				{
+					PrintOutFolder(content,depth+1);
+				}
+				else
+				{
+					Console.WriteLine(string.Concat(Enumerable.Repeat(" ", depth+1))+"-" + content.contentName);
 				}
 			}
 		}
@@ -46,7 +64,7 @@ namespace Advent_2022.Solutions
 			SetupFileSystem(data);
 
 			int total = Root.GetAllSubDirectories().Where(folder => folder.GetSize() < 100000).Sum(folder => folder.GetSize());
-
+			
 			return total;
 		}
 
@@ -68,11 +86,11 @@ namespace Advent_2022.Solutions
 	
 	public class DiskContent
 	{
-		private readonly List<DiskContent> content = new List<DiskContent>();
+		public readonly List<DiskContent> content = new List<DiskContent>();
 
-		private readonly string contentName;
+		public readonly string contentName;
 
-		private readonly int fileSize;
+		public readonly int fileSize;
 		public readonly DiskContent parent;
 
 		public DiskContent(int size, DiskContent parentContent, string contentName)
@@ -89,7 +107,7 @@ namespace Advent_2022.Solutions
 
 		public DiskContent EnterDirectory(string name)
 		{
-			return content.First(c => c.contentName == name);
+			return content.First(c => c.contentName.Substring(0,name.Length) == name);
 		}
 
 
