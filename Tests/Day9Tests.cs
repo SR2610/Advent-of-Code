@@ -9,13 +9,13 @@ namespace Advent_2022.Tests
 		[Test]
 		public void PartOneTest()
 		{
-			Assert.AreEqual(-1, Day9.SolvePartOne(Utils.GetDataFromFileAsLines("day9.txt", true)));
+			Assert.AreEqual(13, Day9.SolveRope(Utils.GetDataFromFileAsLines("day9.txt", true),2));
 		}
 		
 		[Test]
 		public void PartTwoTest()
 		{
-			Assert.AreEqual(-1, Day9.SolvePartTwo(Utils.GetDataFromFileAsLines("day9.txt", true)));
+			Assert.AreEqual(36, Day9.SolveRope(Utils.GetDataFromFileAsLines("day9_testdata2.txt", true),10));
 		}
 	}
 }
