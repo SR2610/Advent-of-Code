@@ -15,7 +15,7 @@ namespace Advent_2022.Tests
 		[Test]
 		public void PartTwoTest()
 		{
-			Assert.AreEqual(36, Day9.SolveRope(Utils.GetDataFromFileAsLines("day9_testdata2.txt", true),10));
+			Assert.AreEqual(36, Day9.SolveRope(Utils.GetDataFromFileAsLines("day9_additional.txt", true),10));
 		}
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Advent_2022.Solutions
 {
@@ -27,11 +26,9 @@ namespace Advent_2022.Solutions
 						allKnotPositions[k] = MoveKnot(allKnotPositions[k], allKnotPositions[k - 1]);
 					}
 
-
-					if (!tailPositions.Contains((allKnotPositions[^1].x, allKnotPositions[^1].y)))
-						tailPositions.Add((allKnotPositions[^1].x, allKnotPositions[^1].y));
-
-				
+					(int, int) tail = (allKnotPositions[^1].x, allKnotPositions[^1].y);
+					if (!tailPositions.Contains(tail))
+						tailPositions.Add(tail);
 				}
 			}
 
@@ -45,16 +42,16 @@ namespace Advent_2022.Solutions
 			switch (instruction)
 			{
 				case 'R':
-					head.x += 1;
+					head.x++;
 					break;
 				case 'L':
-					head.x -= 1;
+					head.x--;
 					break;
 				case 'U':
-					head.y += 1;
+					head.y++;
 					break;
 				case 'D':
-					head.y -= 1;
+					head.y--;
 					break;
 			}
 
