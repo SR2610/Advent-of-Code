@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Advent_2022.Solutions
 {
@@ -8,7 +9,7 @@ namespace Advent_2022.Solutions
 		public static int SolveRope(IEnumerable<string> data, int knots)
 		{
 			List<Position> allKnotPositions = new List<Position>();
-			List<Position> tailPositions = new List<Position>();
+			HashSet<(int, int)> tailPositions = new HashSet<(int, int)>();
 			for (int i = 0; i < knots; i++)
 			{
 				allKnotPositions.Add(new Position(0, 0));
@@ -26,8 +27,11 @@ namespace Advent_2022.Solutions
 						allKnotPositions[k] = MoveKnot(allKnotPositions[k], allKnotPositions[k - 1]);
 					}
 
-					if (!tailPositions.Contains(allKnotPositions[^1]))
-						tailPositions.Add(allKnotPositions[^1]);
+
+					if (!tailPositions.Contains((allKnotPositions[^1].x, allKnotPositions[^1].y)))
+						tailPositions.Add((allKnotPositions[^1].x, allKnotPositions[^1].y));
+
+				
 				}
 			}
 
