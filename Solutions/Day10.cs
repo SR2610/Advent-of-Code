@@ -1,135 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Advent_2022.Solutions
 {
     public static class Day10
     {
-        public static int SolvePartOne(IEnumerable<string> data)
+        private const string Add = "addx";
+
+        public static int HandleInstructions(IEnumerable<string> data, bool displayOutput)
         {
-            string[] input = data as string[] ?? data.ToArray();
-            int[] checkCycles = new[] {20, 60, 100, 140, 180, 220};
-            int cycle = 1;
-            int currentLine = 0;
-            bool hasInput = true;
-            bool busy = false;
-            int xRegister = 1;
-            int total = 0;
+            var input = new Queue<string>(data);
+            int cycle = 1, xRegister = 1, total = 0; //Why cycle and register start at 1 >:(
             int queuedInput = 0;
-            while (hasInput)
+            while (input.Count > 0)
             {
-                if (busy)
+                if (displayOutput)
                 {
-                    busy = false;
+                    Console.Write(MathF.Abs((cycle - 1) % 40 - xRegister) <= 1 ? '#' : '.');
+                    if (cycle % 40 == 0) Console.WriteLine();
+                }
+
+                if (queuedInput != 0)
+                {
                     xRegister += queuedInput;
                     queuedInput = 0;
                 }
                 else
                 {
-                    if (currentLine < input.Count())
+                    string line = input.Dequeue();
+                    queuedInput = line[..4] switch
                     {
-                        switch (input[currentLine].Substring(0,4))
-                        {
-                            case "noop": break;
-                            case "addx":
-                            {
-                                queuedInput=int.Parse(input[currentLine].Split(' ')[1]);
-                                busy = true;
-                                break;
-                            }
-                        }
-
-                        currentLine++;
-                    }
-                    else
-                    {
-                        hasInput = false;
-                    }
+                        Add => int.Parse(line.Split(' ')[1]),
+                        _ => queuedInput
+                    };
                 }
 
                 cycle++;
-
-                if (checkCycles.Contains(cycle))
-                {
-                    total += (xRegister * cycle);
-                }
-
-
-
+                if ((cycle - 20) % 40 == 0) total += xRegister * cycle;
             }
-
-
-            return total;
-        }
-
-
-        public static int SolvePartTwo(IEnumerable<string> data)
-        {
-            string[] input = data as string[] ?? data.ToArray();
-            int[] checkCycles = new[] {20, 60, 100, 140, 180, 220};
-            int cycle = 1;
-            int currentLine = 0;
-            bool hasInput = true;
-            bool busy = false;
-            int xRegister = 1;
-            int total = 0;
-            int queuedInput = 0;
-            int currentPixel = 0;
-            while (hasInput)
-            {
-                
-                int spritePosition = xRegister;
-                if (MathF.Abs((currentPixel) - spritePosition) <= 1)
-                {
-                    Console.Write('#');
-                }
-                else
-                {
-                    Console.Write('.');
-                }
-
-                currentPixel++;
-                if (currentPixel == 40)
-                {
-                    Console.WriteLine();
-                    currentPixel = 0;
-                }
-                
-                if (busy)
-                {
-                    busy = false;
-                    xRegister += queuedInput;
-                    queuedInput = 0;
-                }
-                else
-                {
-                    if (currentLine < input.Count())
-                    {
-                        switch (input[currentLine].Substring(0,4))
-                        {
-                            case "noop": break;
-                            case "addx":
-                            {
-                                queuedInput=int.Parse(input[currentLine].Split(' ')[1]);
-                                busy = true;
-                                break;
-                            }
-                        }
-
-                        currentLine++;
-                    }
-                    else
-                    {
-                        hasInput = false;
-                    }
-                }
-                
-                cycle++;
-
-
-            }
-
 
             return total;
         }
