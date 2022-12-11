@@ -19,11 +19,11 @@ namespace Advent_2022.Solutions
                 if (int.TryParse(operation[1], out int result))
                 {
                     monkey.worryFactor = result;
-                    monkey.worryType = operation[0] == "+" ? Monkey.WorryType.ADD : Monkey.WorryType.MULTIPLY;
+                    monkey.worryType = operation[0] == "+" ? Monkey.WorryType.Add : Monkey.WorryType.Multiply;
                 }
                 else
                 {
-                    monkey.worryType = Monkey.WorryType.SQUARE;
+                    monkey.worryType = Monkey.WorryType.Square;
                 }
 
                 monkey.testFactor = int.Parse(data[i + 3].Split("by ")[1]);
@@ -45,13 +45,13 @@ namespace Advent_2022.Solutions
 
                         switch (monkey.worryType)
                         {
-                            case Monkey.WorryType.ADD:
+                            case Monkey.WorryType.Add:
                                 worryLevel += monkey.worryFactor;
                                 break;
-                            case Monkey.WorryType.MULTIPLY:
+                            case Monkey.WorryType.Multiply:
                                 worryLevel *= monkey.worryFactor;
                                 break;
-                            case Monkey.WorryType.SQUARE:
+                            case Monkey.WorryType.Square:
                             default:
                                 worryLevel *= worryLevel;
                                 break;
@@ -81,13 +81,14 @@ namespace Advent_2022.Solutions
     {
         public enum WorryType
         {
-            ADD,
-            MULTIPLY,
-            SQUARE
+            Add,
+            Multiply,
+            Square
         }
 
+        public readonly List<long> heldItems;
+
         public int falseOutput;
-        public List<long> heldItems;
         public long inspectedItems;
         public int testFactor;
         public int trueOutput;
