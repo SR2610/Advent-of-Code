@@ -30,6 +30,9 @@ namespace Advent_2022
                               Day10.HandleInstructions(Utils.GetDataFromFileAsLines("day10.txt"), false));
             Console.WriteLine("Day 10 Part 2: ");
             Day10.HandleInstructions(Utils.GetDataFromFileAsLines("day10.txt"), true);
+            Console.WriteLine();
+            Console.WriteLine("Day 11 Part 1: " + Day11.DoMonkeyBusiness(Utils.GetDataFromFileAsLines("day11.txt").ToArray(),20,false));
+            Console.WriteLine("Day 11 Part 2: " + Day11.DoMonkeyBusiness(Utils.GetDataFromFileAsLines("day11.txt").ToArray(),10000,true));
         }
     }
 }
