@@ -86,5 +86,9 @@ namespace Advent_2022.Solutions
 			this.x = x;
 			this.y = y;
 		}
-	}
+		
+		public override string ToString()
+		{
+			return $"({x} ,{y})";
+		}	}
 }

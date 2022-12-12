@@ -33,6 +33,8 @@ namespace Advent_2022
             Console.WriteLine();
             Console.WriteLine("Day 11 Part 1: " + Day11.DoMonkeyBusiness(Utils.GetDataFromFileAsLines("day11.txt").ToArray(),20,false));
             Console.WriteLine("Day 11 Part 2: " + Day11.DoMonkeyBusiness(Utils.GetDataFromFileAsLines("day11.txt").ToArray(),10000,true));
+            Console.WriteLine("Day 12 Part 1: " + Day12.SolvePartOne(Utils.GetDataFromFileAsLines("day12.txt").ToList()));
+            Console.WriteLine("Day 12 Part 2: " + Day12.SolvePartTwo(Utils.GetDataFromFileAsLines("day12.txt").ToList()));
         }
     }
 }
