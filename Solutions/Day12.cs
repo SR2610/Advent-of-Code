@@ -21,8 +21,8 @@ namespace Advent_2022.Solutions
         [SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
         private static int GetShortestPath(Tuple<int, int> startPos, Tuple<int, int> endPos)
         {
-            var previous = new Dictionary<Tuple<int, int>, Tuple<int, int>>();
-            var queue = new Queue<Tuple<int, int>>();
+            Dictionary<Tuple<int, int>, Tuple<int, int>> previous = new Dictionary<Tuple<int, int>, Tuple<int, int>>();
+            Queue<Tuple<int, int>> queue = new Queue<Tuple<int, int>>();
             queue.Enqueue(startPos);
 
             while (queue.Count > 0)
@@ -57,31 +57,33 @@ namespace Advent_2022.Solutions
         private static HashSet<Tuple<int, int>> GenerateMap(List<string> data, out Tuple<int, int> startPos,
             out Tuple<int, int> endPos)
         {
-            var lowestPoints = new HashSet<Tuple<int, int>>();
+            HashSet<Tuple<int, int>> lowestPoints = new HashSet<Tuple<int, int>>();
             int[,] map = new int[data.First().Length, data.Count()];
             startPos = new Tuple<int, int>(0, 0);
             endPos = new Tuple<int, int>(0, 0);
             for (int y = 0; y < data.Count(); y++)
-            for (int x = 0; x < data[y].Length; x++)
             {
-                char currentPoint = data[y][x];
-                switch (currentPoint)
+                for (int x = 0; x < data[y].Length; x++)
                 {
-                    case 'S':
-                        startPos = new Tuple<int, int>(x, y);
-                        map[x, y] = 0;
-                        break;
-                    case 'E':
-                        endPos = new Tuple<int, int>(x, y);
-                        map[x, y] = 26;
-                        break;
-                    case 'a':
-                        lowestPoints.Add(new Tuple<int, int>(x, y));
-                        map[x, y] = char.ToUpper(currentPoint) - 64;
-                        break;
-                    default:
-                        map[x, y] = char.ToUpper(currentPoint) - 64;
-                        break;
+                    char currentPoint = data[y][x];
+                    switch (currentPoint)
+                    {
+                        case 'S':
+                            startPos = new Tuple<int, int>(x, y);
+                            map[x, y] = 0;
+                            break;
+                        case 'E':
+                            endPos = new Tuple<int, int>(x, y);
+                            map[x, y] = 26;
+                            break;
+                        case 'a':
+                            lowestPoints.Add(new Tuple<int, int>(x, y));
+                            map[x, y] = char.ToUpper(currentPoint) - 64;
+                            break;
+                        default:
+                            map[x, y] = char.ToUpper(currentPoint) - 64;
+                            break;
+                    }
                 }
             }
 
@@ -90,23 +92,25 @@ namespace Advent_2022.Solutions
             int height = map.GetLength(1);
 
             for (int y = 0; y < height; y++)
-            for (int x = 0; x < width; x++)
             {
-                var adjacent = new HashSet<Tuple<int, int>>();
+                for (int x = 0; x < width; x++)
+                {
+                    HashSet<Tuple<int, int>> adjacent = new HashSet<Tuple<int, int>>();
 
-                if (x > 0 && map[x - 1, y] <= map[x, y] + 1)
-                    adjacent.Add(new Tuple<int, int>(x - 1, y));
-                if (x < width - 1 && map[x + 1, y] <= map[x, y] + 1)
-                    adjacent.Add(new Tuple<int, int>(x + 1, y));
+                    if (x > 0 && map[x - 1, y] <= map[x, y] + 1)
+                        adjacent.Add(new Tuple<int, int>(x - 1, y));
+                    if (x < width - 1 && map[x + 1, y] <= map[x, y] + 1)
+                        adjacent.Add(new Tuple<int, int>(x + 1, y));
 
 
-                if (y > 0 && map[x, y - 1] <= map[x, y] + 1)
-                    adjacent.Add(new Tuple<int, int>(x, y - 1));
+                    if (y > 0 && map[x, y - 1] <= map[x, y] + 1)
+                        adjacent.Add(new Tuple<int, int>(x, y - 1));
 
-                if (y < height - 1 && map[x, y + 1] <= map[x, y] + 1)
-                    adjacent.Add(new Tuple<int, int>(x, y + 1));
+                    if (y < height - 1 && map[x, y + 1] <= map[x, y] + 1)
+                        adjacent.Add(new Tuple<int, int>(x, y + 1));
 
-                AdjacencyList.Add(new Tuple<int, int>(x, y), adjacent);
+                    AdjacencyList.Add(new Tuple<int, int>(x, y), adjacent);
+                }
             }
 
             return lowestPoints;
@@ -115,12 +119,12 @@ namespace Advent_2022.Solutions
         public static int SolvePartTwo(List<string> data)
         {
             AdjacencyList.Clear();
-            var points = GenerateMap(data, out var startPos, out var endPos);
+            HashSet<Tuple<int, int>> points = GenerateMap(data, out var startPos, out var endPos);
 
 
             int shortestDistance = int.MaxValue;
 
-            foreach (var lowPoint in points)
+            foreach (Tuple<int, int> lowPoint in points)
             {
                 int dist = GetShortestPath(lowPoint, endPos);
                 if (dist < shortestDistance)
