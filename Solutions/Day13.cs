@@ -8,18 +8,15 @@ namespace Advent_2022.Solutions
 		public static int SolvePartOne(string[] data)
 		{
 			int total = 0;
-			int pairId = 1;
 			for (int i = 0; i < data.Length; i += 3)
 			{
 				Item left = Parse(data[i]);
 				Item right = Parse(data[i + 1]);
 
-				if (Compare(left, right) == -1)
+				if (Compare(left, right) == Comparison.SMALLER) //If left is smaller than right
 				{
-					total += pairId;
+					total += i / 3 + 1;
 				}
-
-				pairId++;
 			}
 
 			return total;
@@ -36,8 +33,7 @@ namespace Advent_2022.Solutions
 			items.Add(a);
 			items.Add(b);
 
-			items.Sort(Compare);
-
+			items.Sort(DoComparisonForSort);
 			return (items.IndexOf(a) + 1) * (items.IndexOf(b) + 1);
 		}
 
@@ -103,24 +99,26 @@ namespace Advent_2022.Solutions
 		}
 
 
-		private static int Compare(Item left, Item right)
+		private static int DoComparisonForSort(Item left, Item right)
 		{
-			if (left.GetType() == typeof(IntItem) && right.GetType() == typeof(IntItem))
+			return (int) Compare(left, right);
+		}
+
+		private static Comparison Compare(Item left, Item right)
+		{
+			if (left.GetType() == typeof(IntItem) && right.GetType() == typeof(IntItem)) //If both sides are whole items, we can check them
 			{
 				if (((IntItem) left).Value == ((IntItem) right).Value)
 				{
-					return 0;
+					return Comparison.EQUAL;
 				}
 
-				if (((IntItem) left).Value < ((IntItem) right).Value)
-				{
-					return -1;
-				}
-
-				return 1;
+				return ((IntItem) left).Value < ((IntItem) right).Value ? Comparison.SMALLER : Comparison.BIGGER;
 			}
 
-			if (!(left is ArrayItem leftArray))
+			//Not whole items on both sides
+
+			if (!(left is ArrayItem leftArray)) //If it is not already an array, make it one
 			{
 				leftArray = new ArrayItem
 				{
@@ -139,42 +137,44 @@ namespace Advent_2022.Solutions
 
 			for (int index = 0; index < leftArray.Value.Count; index++)
 			{
-				if (index >= rightArray.Value.Count())
+				if (index >= rightArray.Value.Count()) //If the left is out of items, this is wrong
 				{
-					return 1;
+					return Comparison.BIGGER;
 				}
 
-				int comparison = Compare(leftArray.Value[index], rightArray.Value[index]);
-				if (comparison == 0)
+				Comparison comparison = Compare(leftArray.Value[index], rightArray.Value[index]); //Check if left > or < right
+
+				if (comparison == Comparison.EQUAL) //If they were equal, go to the next item in the list
 				{
 					continue;
 				}
 
-				return comparison;
+				return comparison; //Return < > check
 			}
 
 
-			if (leftArray.Value.Count() == rightArray.Value.Count())
-			{
-				return 0;
-			}
-
-			return -1;
+			return leftArray.Value.Count == rightArray.Value.Count ? Comparison.EQUAL : Comparison.SMALLER;
 		}
-	}
 
+		private enum Comparison
+		{
+			BIGGER = 1,
+			EQUAL = 0,
+			SMALLER = -1
+		}
 
-	public abstract class Item
-	{
-	}
+		private abstract class Item
+		{
+		}
 
-	public class IntItem : Item
-	{
-		public int Value { get; set; }
-	}
+		private class IntItem : Item
+		{
+			public int Value { get; set; }
+		}
 
-	public class ArrayItem : Item
-	{
-		public List<Item> Value { get; set; }
+		private class ArrayItem : Item
+		{
+			public List<Item> Value { get; set; }
+		}
 	}
 }
