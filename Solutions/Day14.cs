@@ -85,7 +85,6 @@ namespace Advent_2022.Solutions
 				}
 				return false;
 			}
-
 			if (!Map.Contains((xPos, yPos + 1)))
 				return TryMoveSand(xPos, yPos + 1, simulateFloor);
 			if (!Map.Contains((xPos - 1, yPos + 1)))

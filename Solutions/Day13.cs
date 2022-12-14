@@ -13,7 +13,7 @@ namespace Advent_2022.Solutions
 				Item left = Parse(data[i]);
 				Item right = Parse(data[i + 1]);
 
-				if (Compare(left, right) == Comparison.SMALLER) //If left is smaller than right
+				if (Compare(left, right) == Comparison.SMALLER) 
 				{
 					total += i / 3 + 1;
 				}
@@ -22,11 +22,9 @@ namespace Advent_2022.Solutions
 			return total;
 		}
 
-		public static int SolvePartTwo(IEnumerable<string> data)
+		public static int SolvePartTwo(string[] data)
 		{
 			List<Item> items = (from line in data where line.Length > 0 select Parse(line)).ToList(); //Parse all lines
-
-			//Create divider packets
 			Item a = Parse("[[2]]");
 			Item b = Parse("[[6]]");
 
@@ -56,11 +54,11 @@ namespace Advent_2022.Solutions
 						currentCharacter = input[inputIndex++];
 						switch (currentCharacter)
 						{
-							case '[':
-								depth++;
-								break;
 							case ']':
 								depth--;
+								break;
+							case '[':
+								depth++;
 								break;
 						}
 
@@ -90,8 +88,6 @@ namespace Advent_2022.Solutions
 					}
 				}
 			}
-
-
 			return new ArrayItem
 			{
 				Value = items
