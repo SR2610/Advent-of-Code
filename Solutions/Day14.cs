@@ -5,8 +5,7 @@ namespace Advent_2022.Solutions
 {
 	public static class Day14
 	{
-
-		private static  HashSet<(int, int)> Map;
+		private static HashSet<(int, int)> Map;
 		private static int LowestSolidHeight = int.MinValue;
 
 		public static int SolvePartOne(string[] input)
@@ -22,10 +21,11 @@ namespace Advent_2022.Solutions
 				else
 					hasVoided = true;
 			}
+
 			return sandDropped;
 		}
-		
-		
+
+
 		public static int SolvePartTwo(string[] input)
 		{
 			CreateMap(input);
@@ -34,16 +34,16 @@ namespace Advent_2022.Solutions
 
 			while (!hasFilled)
 			{
-				if (TryMoveSand(500, 0,true))
+				if (TryMoveSand(500, 0, true))
 					sandDropped++;
 
 				if (Map.Contains((500, 0)))
 					hasFilled = true;
 			}
+
 			return sandDropped;
 		}
-		
-		
+
 
 		private static void CreateMap(string[] input)
 		{
@@ -76,40 +76,40 @@ namespace Advent_2022.Solutions
 
 		private static bool TryMoveSand(int xPos, int yPos, bool simulateFloor = false)
 		{
-			if (!simulateFloor&&yPos > LowestSolidHeight)
-				return false;
-			if (simulateFloor && yPos > LowestSolidHeight)
+			if (yPos > LowestSolidHeight)
 			{
-				Map.Add((xPos, yPos));
-				return true;
+				if (simulateFloor)
+				{
+					Map.Add((xPos, yPos));
+					return true;
+				}
+				return false;
 			}
 
 			if (!Map.Contains((xPos, yPos + 1)))
-				return TryMoveSand(xPos, yPos + 1,simulateFloor);
-			if (!Map.Contains((xPos-1, yPos + 1)))
-				return TryMoveSand(xPos-1, yPos + 1,simulateFloor);
-			if (!Map.Contains((xPos+1, yPos + 1)))
-				return TryMoveSand(xPos+1, yPos + 1,simulateFloor);
+				return TryMoveSand(xPos, yPos + 1, simulateFloor);
+			if (!Map.Contains((xPos - 1, yPos + 1)))
+				return TryMoveSand(xPos - 1, yPos + 1, simulateFloor);
+			if (!Map.Contains((xPos + 1, yPos + 1)))
+				return TryMoveSand(xPos + 1, yPos + 1, simulateFloor);
 			Map.Add((xPos, yPos));
 			return true;
 		}
-		
-		
+
+
 		private static void CreateRock(int start, int stop, bool isX, int staticPos)
 		{
-			int length = Math.Abs(start-stop);
-			for(int i=0; i <= length; i++)
+			int length = Math.Abs(start - stop);
+			for (int i = 0; i <= length; i++)
 			{
-				int step = (start < stop) ? start + i : stop + (length-i);
+				int step = start < stop ? start + i : stop + (length - i);
 
 				int xPos = isX ? step : staticPos;
 				int yPos = isX ? staticPos : step;
 
-				if(!Map.Contains((xPos,yPos)))
+				if (!Map.Contains((xPos, yPos)))
 					Map.Add((xPos, yPos));
-				
 			}
 		}
-		
 	}
 }
