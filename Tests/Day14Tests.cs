@@ -11,5 +11,11 @@ namespace Advent_2022.Tests
 		{
 			Assert.AreEqual(24, Day14.SolvePartOne(Utils.GetDataFromFileAsLines("day14.txt", true).ToArray()));
 		}
+		
+		[Test]
+		public void PartTwoTest()
+		{
+			Assert.AreEqual(93, Day14.SolvePartTwo(Utils.GetDataFromFileAsLines("day14.txt", true).ToArray()));
+		}
 	}
 }

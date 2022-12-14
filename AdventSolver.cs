@@ -38,7 +38,7 @@ namespace Advent_2022
 			Console.WriteLine("Day 13 Part 1: " + Day13.SolvePartOne(Utils.GetDataFromFileAsLines("day13.txt").ToArray()));
 			Console.WriteLine("Day 13 Part 2: " + Day13.SolvePartTwo(Utils.GetDataFromFileAsLines("day13.txt").ToArray()));
 			Console.WriteLine("Day 14 Part 1: " + Day14.SolvePartOne(Utils.GetDataFromFileAsLines("day14.txt").ToArray()));
-
+			Console.WriteLine("Day 14 Part 2: " + Day14.SolvePartTwo(Utils.GetDataFromFileAsLines("day14.txt").ToArray()));
 			Console.ReadLine();
 		}
 	}

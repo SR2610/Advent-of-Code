@@ -6,35 +6,12 @@ namespace Advent_2022.Solutions
 	public static class Day14
 	{
 
-		private static HashSet<(int, int)> map = new HashSet<(int, int)>();
-		private static int lowestSolidHeight = int.MinValue;
+		private static  HashSet<(int, int)> Map;
+		private static int LowestSolidHeight = int.MinValue;
 
 		public static int SolvePartOne(string[] input)
 		{
-			foreach (string line in input)
-			{
-				string[] points = line.Split("->");
-
-				Tuple<int, int> lastPoint = null;
-
-				foreach (string point in points)
-				{
-					string[] coords = point.Trim().Split(',');
-					Tuple<int, int> currentPoint = new Tuple<int, int>(int.Parse(coords[0]), int.Parse(coords[1]));
-					if (lastPoint != null)
-					{
-						if(lastPoint.Item1!=currentPoint.Item1)
-							CreateRock(lastPoint.Item1, currentPoint.Item1,true,lastPoint.Item2);
-						else CreateRock(lastPoint.Item2, currentPoint.Item2,false,lastPoint.Item1);
-
-					}
-
-					if (currentPoint.Item2 > lowestSolidHeight)
-						lowestSolidHeight = currentPoint.Item2;
-
-					lastPoint = currentPoint;
-				}
-			}
+			CreateMap(input);
 			bool hasVoided = false;
 			int sandDropped = 0;
 
@@ -47,19 +24,73 @@ namespace Advent_2022.Solutions
 			}
 			return sandDropped;
 		}
-
-
-		private static bool TryMoveSand(int xPos, int yPos)
+		
+		
+		public static int SolvePartTwo(string[] input)
 		{
-			if (yPos > lowestSolidHeight)
+			CreateMap(input);
+			bool hasFilled = false;
+			int sandDropped = 0;
+
+			while (!hasFilled)
+			{
+				if (TryMoveSand(500, 0,true))
+					sandDropped++;
+
+				if (Map.Contains((500, 0)))
+					hasFilled = true;
+			}
+			return sandDropped;
+		}
+		
+		
+
+		private static void CreateMap(string[] input)
+		{
+			Map = new HashSet<(int, int)>();
+			foreach (string line in input)
+			{
+				string[] points = line.Split("->");
+
+				Tuple<int, int> lastPoint = null;
+
+				foreach (string point in points)
+				{
+					string[] coords = point.Trim().Split(',');
+					Tuple<int, int> currentPoint = new Tuple<int, int>(int.Parse(coords[0]), int.Parse(coords[1]));
+					if (lastPoint != null)
+					{
+						if (lastPoint.Item1 != currentPoint.Item1)
+							CreateRock(lastPoint.Item1, currentPoint.Item1, true, lastPoint.Item2);
+						else CreateRock(lastPoint.Item2, currentPoint.Item2, false, lastPoint.Item1);
+					}
+
+					if (currentPoint.Item2 > LowestSolidHeight)
+						LowestSolidHeight = currentPoint.Item2;
+
+					lastPoint = currentPoint;
+				}
+			}
+		}
+
+
+		private static bool TryMoveSand(int xPos, int yPos, bool simulateFloor = false)
+		{
+			if (!simulateFloor&&yPos > LowestSolidHeight)
 				return false;
-			if (!map.Contains((xPos, yPos + 1)))
-				return TryMoveSand(xPos, yPos + 1);
-			if (!map.Contains((xPos-1, yPos + 1)))
-				return TryMoveSand(xPos-1, yPos + 1);
-			if (!map.Contains((xPos+1, yPos + 1)))
-				return TryMoveSand(xPos+1, yPos + 1);
-			map.Add((xPos, yPos));
+			if (simulateFloor && yPos > LowestSolidHeight)
+			{
+				Map.Add((xPos, yPos));
+				return true;
+			}
+
+			if (!Map.Contains((xPos, yPos + 1)))
+				return TryMoveSand(xPos, yPos + 1,simulateFloor);
+			if (!Map.Contains((xPos-1, yPos + 1)))
+				return TryMoveSand(xPos-1, yPos + 1,simulateFloor);
+			if (!Map.Contains((xPos+1, yPos + 1)))
+				return TryMoveSand(xPos+1, yPos + 1,simulateFloor);
+			Map.Add((xPos, yPos));
 			return true;
 		}
 		
@@ -74,8 +105,8 @@ namespace Advent_2022.Solutions
 				int xPos = isX ? step : staticPos;
 				int yPos = isX ? staticPos : step;
 
-				if(!map.Contains((xPos,yPos)))
-					map.Add((xPos, yPos));
+				if(!Map.Contains((xPos,yPos)))
+					Map.Add((xPos, yPos));
 				
 			}
 		}
