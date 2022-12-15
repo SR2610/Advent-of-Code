@@ -10,32 +10,32 @@ namespace Advent_2022.Solutions
 		[SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
 		public static int SolvePartOne(string[] input, int rowToCheck)
 		{
-			List<Sensor> data = ParseInput(input);
+			HashSet<(int, int, int, int, int)> data = ParseInput(input);
 			int minX = data
-				.Select(s => s.sensorX - (s.distanceToSensor - Math.Abs(rowToCheck - s.sensorY)))
+				.Select(s => s.Item1 - (s.Item5 - Math.Abs(rowToCheck - s.Item2)))
 				.Min();
 			int maxX = data
-				.Select(s => s.sensorX + (s.distanceToSensor - Math.Abs(rowToCheck - s.sensorY)))
+				.Select(s => s.Item1 + (s.Item5 - Math.Abs(rowToCheck - s.Item2)))
 				.Max();
 
 			int points = Enumerable.Range(minX, maxX - minX + 1)
-				.Where(x => data.All(s => (s.beaconX, s.beaconY) != (x, rowToCheck)))
-				.Count(x => data.Any(s => Math.Abs(x - s.sensorX) + Math.Abs(rowToCheck - s.sensorY) <= s.distanceToSensor));
+				.Where(x => data.All(sensor => (sensor.Item3, sensor.Item4) != (x, rowToCheck)))
+				.Count(x => data.Any(sensor => Math.Abs(x - sensor.Item1) + Math.Abs(rowToCheck - sensor.Item2) <= sensor.Item5));
 
 
 			return points;
 		}
 
 		[SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
-		public static long SolvePartTwo(string[] input, int maxDistance)
+		public static long SolvePartTwo(string[] input, int maxHeight)
 		{
-			List<Sensor> data = ParseInput(input);
+			HashSet<(int, int, int, int, int)> data = ParseInput(input);
 
-			(int x, int y) point = Enumerable.Range(0, maxDistance + 1)
+			(int x, int y) point = Enumerable.Range(maxHeight/2, maxHeight + 1)
 				.Select(x => (x, data: data
-					.Select(s => (sx: s.sensorX, sy: s.sensorY, distToX: s.distanceToSensor - Math.Abs(x - s.sensorX)))
+					.Select(s => (sensorX: s.Item1, sensorY: s.Item2, distToX: s.Item5 - Math.Abs(x - s.Item1)))
 					.Where(s => s.distToX >= 0)
-					.Select(s => (s.sx, s.sy, minY: s.sy - s.distToX, maxY: s.sy + s.distToX))
+					.Select(s => (sensorX: s.sensorX, sensorY: s.sensorY, minY: s.sensorY - s.distToX, maxY: s.sensorY + s.distToX))
 					.OrderBy(s => s.minY)
 					.ToList()))
 				.SelectMany(x =>
@@ -57,44 +57,18 @@ namespace Advent_2022.Solutions
 		}
 
 
-		private static List<Sensor> ParseInput(string[] input)
+		private static HashSet<(int, int, int, int, int)> ParseInput(string[] input)
 		{
-			List<Sensor> sensors = new List<Sensor>();
-
+			HashSet<(int, int, int, int, int)> result = new HashSet<(int, int, int, int, int)>();
 			foreach (string line in input)
 			{
 				string[] split = line.Replace(",", "").Replace(":", "").Split(' ');
 				(int, int) beacon = (int.Parse(split[8].Split('=')[1]), int.Parse(split[9].Split('=')[1]));
 				(int sensorX, int sensorY) = (int.Parse(split[2].Split('=')[1]), int.Parse(split[3].Split('=')[1]));
-				Sensor sensor = new Sensor(sensorX, sensorY, Math.Abs(sensorX - beacon.Item1) + Math.Abs(sensorY - beacon.Item2), beacon.Item1, beacon.Item2);
-				sensors.Add(sensor);
+				result.Add((sensorX, sensorY, beacon.Item1, beacon.Item2, Math.Abs(sensorX - beacon.Item1) + Math.Abs(sensorY - beacon.Item2)));
 			}
 
-			return sensors;
-		}
-
-
-		private readonly struct Sensor
-		{
-			public readonly int sensorX;
-			public readonly int sensorY;
-			public readonly int beaconX;
-			public readonly int beaconY;
-			public readonly int distanceToSensor;
-
-			public override string ToString()
-			{
-				return $"{sensorX},{sensorY} : {beaconX},{beaconY} - {distanceToSensor}";
-			}
-
-			public Sensor(int sensorX, int sensorY, int distanceToSensor, int beaconX, int beaconY)
-			{
-				this.sensorX = sensorX;
-				this.sensorY = sensorY;
-				this.distanceToSensor = distanceToSensor;
-				this.beaconX = beaconX;
-				this.beaconY = beaconY;
-			}
+			return result;
 		}
 	}
 }
