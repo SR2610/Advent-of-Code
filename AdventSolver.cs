@@ -34,13 +34,13 @@ namespace Advent_2022
 			Console.WriteLine("Day 11 Part 1: " + Day11.DoMonkeyBusiness(Utils.GetDataFromFileAsLines("day11.txt").ToArray(), 20, false));
 			Console.WriteLine("Day 11 Part 2: " + Day11.DoMonkeyBusiness(Utils.GetDataFromFileAsLines("day11.txt").ToArray(), 10000, true));
 			Console.WriteLine("Day 12 Part 1: " + Day12.SolvePartOne(Utils.GetDataFromFileAsLines("day12.txt").ToList()));
-			//Console.WriteLine("Day 12 Part 2: "+ Day12.SolvePartTwo(Utils.GetDataFromFileAsLines("day12.txt").ToList()));
+			Console.WriteLine("Day 12 Part 2: "+ Day12.SolvePartTwo(Utils.GetDataFromFileAsLines("day12.txt").ToList()));
 			Console.WriteLine("Day 13 Part 1: " + Day13.SolvePartOne(Utils.GetDataFromFileAsLines("day13.txt").ToArray()));
 			Console.WriteLine("Day 13 Part 2: " + Day13.SolvePartTwo(Utils.GetDataFromFileAsLines("day13.txt").ToArray()));
 			Console.WriteLine("Day 14 Part 1: " + Day14.SolvePartOne(Utils.GetDataFromFileAsLines("day14.txt").ToArray()));
 			Console.WriteLine("Day 14 Part 2: " + Day14.SolvePartTwo(Utils.GetDataFromFileAsLines("day14.txt").ToArray()));
-			//Console.WriteLine("Day 15 Part 1:"  + Day15.SolvePartOne(Utils.GetDataFromFileAsLines("day15.txt").ToArray(),2000000));
-			//Console.WriteLine("Day 15 Part 2: " + Day15.SolvePartTwo(Utils.GetDataFromFileAsLines("day15.txt").ToArray(),4000000));
+			Console.WriteLine("Day 15 Part 1: "  + Day15.SolvePartOne(Utils.GetDataFromFileAsLines("day15.txt").ToArray(),2000000));
+			Console.WriteLine("Day 15 Part 2: " + Day15.SolvePartTwo(Utils.GetDataFromFileAsLines("day15.txt").ToArray(),4000000));
 			Console.ReadLine();
 		}
 	}

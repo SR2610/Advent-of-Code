@@ -1,74 +1,135 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Advent_2022.Solutions
 {
 	public static class Day15
 	{
-		[SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
 		public static int SolvePartOne(string[] input, int rowToCheck)
 		{
-			HashSet<(int, int, int, int, int)> data = ParseInput(input);
+			List<Sensor> data = ParseInputToList(input);
+
 			int minX = data
-				.Select(s => s.Item1 - (s.Item5 - Math.Abs(rowToCheck - s.Item2)))
+				.Select(sensor => sensor.sensorX - (sensor.distance - Math.Abs(rowToCheck - sensor.sensorY)))
 				.Min();
 			int maxX = data
-				.Select(s => s.Item1 + (s.Item5 - Math.Abs(rowToCheck - s.Item2)))
+				.Select(sensor => sensor.sensorX + (sensor.distance - Math.Abs(rowToCheck - sensor.sensorY)))
 				.Max();
 
-			int points = Enumerable.Range(minX, maxX - minX + 1)
-				.Where(x => data.All(sensor => (sensor.Item3, sensor.Item4) != (x, rowToCheck)))
-				.Count(x => data.Any(sensor => Math.Abs(x - sensor.Item1) + Math.Abs(rowToCheck - sensor.Item2) <= sensor.Item5));
+			int score = 0;
 
+			for (int currentX = minX; currentX <= maxX; currentX++)
+			{
+				bool isBeacon = false;
 
-			return points;
-		}
-
-		[SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
-		public static long SolvePartTwo(string[] input, int maxHeight)
-		{
-			HashSet<(int, int, int, int, int)> data = ParseInput(input);
-
-			(int x, int y) point = Enumerable.Range(maxHeight/2, maxHeight + 1)
-				.Select(x => (x, data: data
-					.Select(s => (sensorX: s.Item1, sensorY: s.Item2, distToX: s.Item5 - Math.Abs(x - s.Item1)))
-					.Where(s => s.distToX >= 0)
-					.Select(s => (sensorX: s.sensorX, sensorY: s.sensorY, minY: s.sensorY - s.distToX, maxY: s.sensorY + s.distToX))
-					.OrderBy(s => s.minY)
-					.ToList()))
-				.SelectMany(x =>
+				foreach (Sensor sensor in data)
 				{
-					(int min, int max) range = (min: 0, max: 0);
-					foreach ((_, _, int minY, int maxY) in x.data)
+					if (sensor.beaconX == currentX && sensor.beaconY == rowToCheck)
 					{
-						if (minY <= range.max + 1)
-							range = (range.min, Math.Max(maxY, range.max));
-						else
-							return new[] {(x.x, y: range.max + 1)};
+						isBeacon = true;
+						break;
 					}
+				}
 
-					return Array.Empty<(int x, int y)>();
-				})
-				.First();
+				if (isBeacon)
+					continue;
 
-			return point.x * 4000000L + point.y;
+				foreach (Sensor sensor in data)
+				{
+					if (currentX >= sensor.MinXAtY(rowToCheck) && currentX <= sensor.MaxXAtY(rowToCheck))
+					{
+						score++;
+						break;
+					}
+				}
+			}
+
+			return score;
 		}
 
-
-		private static HashSet<(int, int, int, int, int)> ParseInput(string[] input)
+		public static long SolvePartTwo(string[] input, int maxRow)
 		{
-			HashSet<(int, int, int, int, int)> result = new HashSet<(int, int, int, int, int)>();
+			List<Sensor> data = ParseInputToList(input);
+			List<(int, int)> bounds = new List<(int, int)>();
+
+			for (int y = maxRow; y > 0; y--)
+			{
+				bounds.Clear();
+				foreach (Sensor sensor in data)
+				{
+					if (Math.Max(sensor.MinXAtY(y), 0) <= Math.Min(sensor.MaxXAtY(y), maxRow))
+					{
+						bounds.Add((Math.Max(sensor.MinXAtY(y), 0), Math.Min(sensor.MaxXAtY(y), maxRow)));
+					}
+				}
+
+				bounds.Sort((a, b) => a.Item1.CompareTo(b.Item1));
+
+				bool isMerged = true;
+
+				while (isMerged && bounds.Count > 1)
+				{
+					isMerged = false;
+
+					if (bounds[0].Item1 <= bounds[1].Item1 && bounds[0].Item2 >= bounds[1].Item1)
+					{
+						bounds[0] = (bounds[0].Item1, Math.Max(bounds[0].Item2, bounds[1].Item2));
+						bounds.RemoveAt(1);
+						isMerged = true;
+					}
+				}
+
+				if (!isMerged || bounds[0].Item1 != 0 || bounds[0].Item2 != maxRow)
+				{
+					return (bounds[0].Item2 + 1) * 4000000L + y;
+				}
+			}
+
+			return 0;
+		}
+
+		private static List<Sensor> ParseInputToList(string[] input)
+		{
+			List<Sensor> result = new List<Sensor>();
 			foreach (string line in input)
 			{
 				string[] split = line.Replace(",", "").Replace(":", "").Split(' ');
 				(int, int) beacon = (int.Parse(split[8].Split('=')[1]), int.Parse(split[9].Split('=')[1]));
 				(int sensorX, int sensorY) = (int.Parse(split[2].Split('=')[1]), int.Parse(split[3].Split('=')[1]));
-				result.Add((sensorX, sensorY, beacon.Item1, beacon.Item2, Math.Abs(sensorX - beacon.Item1) + Math.Abs(sensorY - beacon.Item2)));
+				result.Add(new Sensor(sensorX, sensorY, beacon.Item1, beacon.Item2));
 			}
 
 			return result;
+		}
+
+
+		private class Sensor
+		{
+			public readonly int beaconX;
+			public readonly int beaconY;
+			public readonly int distance;
+			public readonly int sensorX;
+			public readonly int sensorY;
+
+			public Sensor(int sX, int sY, int bX, int bY)
+			{
+				sensorX = sX;
+				sensorY = sY;
+				beaconX = bX;
+				beaconY = bY;
+				distance = Math.Abs(sensorX - beaconX) + Math.Abs(sensorY - beaconY);
+			}
+
+			public int MinXAtY(int y)
+			{
+				return sensorX - distance + Math.Abs(sensorY - y);
+			}
+
+			public int MaxXAtY(int y)
+			{
+				return sensorX + distance - Math.Abs(sensorY - y);
+			}
 		}
 	}
 }
