@@ -1,9 +1,9 @@
 def part_one():
-    file = open("./data/day_01.txt", "r").read()
+    file = open("../data/day_01.txt", "r").read()
     print(file.count('(')-file.count(')'))
 
 def part_two():
-    file = open("./data/day_01.txt", "r").read()
+    file = open("../data/day_01.txt", "r").read()
     total = 0
     index = 1
     for char in file:
