@@ -6,7 +6,7 @@ namespace Advent_2022.Solutions
 {
 	public static class Day16
 	{
-		private static void Parse(string[] input, out int start, out List<int[]> graph, out List<int> flows)
+		private static void SetupInput(string[] input, out int start, out List<int[]> graph, out List<int> flows)
 		{
 			List<(string valveName, int flowRate, string[] connections)> valves = new List<(string, int, string[])>();
 			graph = new List<int[]>();
@@ -44,60 +44,62 @@ namespace Advent_2022.Solutions
 
 		public static int SolvePartOne(string[] input)
 		{
-			Parse(input, out int start, out List<int[]> graph, out List<int> flows);
+			SetupInput(input, out int start, out List<int[]> valves, out List<int> flowMap);
 
-			List<(int, int, int, int)> states = new List<(int, int, int, int)> {(start, 0, 0, 0)};
+			List<(int, int, int, int)> states = new List<(int, int, int, int)> {(start, 0, 0, 0)}; //Create initial state from AA with no values
 
-			int[] best = new int[4194304];
+			int[] best = new int[5000000]; //Create empty int array for storing the best options
 
-			int optimalPressureReleased = 0;
+			int optimalPressureReleased = int.MinValue; //Set really bad first optimal pressure
 
-			for (int minute = 1; minute <= 29; minute++)
+			for (int minute = 1; minute <= 29; minute++) //Go through all 30 minutes before the volcano goes
 			{
-				List<(int, int, int, int)> nstates = new List<(int, int, int, int)>();
-				foreach ((int n, int bits, int flow, int acc) in states)
+				List<(int, int, int, int)> newStates = new List<(int, int, int, int)>();
+				foreach ((int valve, int bits, int flow, int acc) in states)
 				{
-					int code = (n << 16) + bits;
-					int projected = acc + flow * (30 - minute + 1);
-					if (best[code] > projected + 1)
+					int index = (valve << 16) + bits;
+					
+					int projected = acc + flow * (30 - minute + 1); //Check how much opening this valve would add
+					
+					if (best[index] > projected + 1) //If this wouldn't be better, skip it
 					{
 						continue;
 					}
 
-					// open valve
-					if (flows[n] > 0 && (bits & (1 << n)) == 0)
+					if (flowMap[valve] > 0 && (bits & (1 << valve)) == 0) //Check that this makes flow and that it isn't open already
 					{
-						int nbits = bits | (1 << n);
-						int nflow = flow + flows[n];
-						code = (n << 16) + nbits;
-						projected = acc + flow + nflow * (30 - minute);
-						if (projected + 1 > best[code])
+						int newBits = bits | (1 << valve);
+						int newFlow = flow + flowMap[valve];
+						index = (valve << 16) + newBits;
+						projected = acc + flow + newFlow * (30 - minute); //Calculate what this states flow will be for the remainder of the time
+						if (projected + 1 > best[index]) //If its better than the current best option for this state
 						{
-							nstates.Add((n, nbits, nflow, acc + flow));
-							best[code] = projected + 1;
+							newStates.Add((valve, newBits, newFlow, acc + flow)); //Add the new state that we can check off of this
+							best[index] = projected + 1;  //Add the best value 
 							if (projected > optimalPressureReleased)
 								optimalPressureReleased = projected;
 						}
 					}
 
-					foreach (int dst in graph[n])
+					foreach (int destination in valves[valve]) //Check all the valves
 					{
-						code = (dst << 16) + bits;
-						projected = acc + flow * (30 - minute + 1);
-						if (projected + 1 > best[code])
+						index = (destination << 16) + bits;
+						projected = acc + flow * (30 - minute + 1); //Calculate the flow
+						if (projected + 1 > best[index])
 						{
-							nstates.Add((dst, bits, flow, acc + flow));
-							best[code] = projected + 1;
-							if (projected > optimalPressureReleased) 
+							newStates.Add((destination, bits, flow, acc + flow));
+							best[index] = projected + 1;
+							if (projected > optimalPressureReleased)
 								optimalPressureReleased = projected;
 						}
 					}
 				}
 
-				states = nstates;
+				states = newStates; //Update the states to the new point to work from
 			}
 
 			return optimalPressureReleased;
 		}
+
 	}
 }
