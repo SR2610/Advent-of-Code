@@ -1,0 +1,80 @@
+# Advent of Code 2022
+Solutions for [Advent of Code 2022](https://adventofcode.com/).
+
+
+## Progress
+- [X] Day 1
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 2
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 3
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 4
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 5
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 6
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 7
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 8
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 9
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 10
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 11
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 12
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 13
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 14
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 15
+    - [X] Part 1
+    - [X] Part 2
+- [ ] Day 16
+    - [X] Part 1
+    - [ ] Part 2
+- [ ] Day 17
+    - [ ] Part 1
+    - [ ] Part 2
+- [ ] Day 18
+    - [ ] Part 1
+    - [ ] Part 2
+- [ ] Day 19
+    - [ ] Part 1
+    - [ ] Part 2
+- [ ] Day 20
+    - [ ] Part 1
+    - [ ] Part 2
+- [ ] Day 21
+    - [ ] Part 1
+    - [ ] Part 2
+- [ ] Day 22
+    - [ ] Part 1
+    - [ ] Part 2
+- [ ] Day 23
+    - [ ] Part 1
+    - [ ] Part 2
+- [ ] Day 24
+    - [ ] Part 1
+    - [ ] Part 2
+- [ ] Day 25
+    - [ ] Part 1
+    - [ ] Part 2
