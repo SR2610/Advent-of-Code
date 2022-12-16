@@ -8,7 +8,7 @@ namespace Advent_2022
 	{
 		private static void Main(string[] args)
 		{
-			Console.WriteLine("Day 1 Part 1: " + Day1.CombinedSolver(1, Utils.GetDataFromFileAsLines("day1.txt")));
+			/*Console.WriteLine("Day 1 Part 1: " + Day1.CombinedSolver(1, Utils.GetDataFromFileAsLines("day1.txt")));
 			Console.WriteLine("Day 1 Part 2: " + Day1.CombinedSolver(3, Utils.GetDataFromFileAsLines("day1.txt")));
 			Console.WriteLine("Day 2 Part 1: " + Day2.SolvePartOne(Utils.GetDataFromFileAsLines("day2.txt")));
 			Console.WriteLine("Day 2 Part 2: " + Day2.SolvePartTwo(Utils.GetDataFromFileAsLines("day2.txt")));
@@ -40,7 +40,10 @@ namespace Advent_2022
 			Console.WriteLine("Day 14 Part 1: " + Day14.SolvePartOne(Utils.GetDataFromFileAsLines("day14.txt").ToArray()));
 			Console.WriteLine("Day 14 Part 2: " + Day14.SolvePartTwo(Utils.GetDataFromFileAsLines("day14.txt").ToArray()));
 			Console.WriteLine("Day 15 Part 1: "  + Day15.SolvePartOne(Utils.GetDataFromFileAsLines("day15.txt").ToArray(),2000000));
-			Console.WriteLine("Day 15 Part 2: " + Day15.SolvePartTwo(Utils.GetDataFromFileAsLines("day15.txt").ToArray(),4000000));
+			Console.WriteLine("Day 15 Part 2: " + Day15.SolvePartTwo(Utils.GetDataFromFileAsLines("day15.txt").ToArray(),4000000));*/
+			Console.WriteLine("Day 16 Part 1: " + Day16.SolvePartOne(Utils.GetDataFromFileAsLines("day16.txt").ToArray()));
+
+			
 			Console.ReadLine();
 		}
 	}

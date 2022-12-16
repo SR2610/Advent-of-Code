@@ -9,7 +9,7 @@ namespace Advent_2022.Tests
 		[Test]
 		public void PartOneTest()
 		{
-			Assert.AreEqual(26, Day16.SolvePartOne(Utils.GetDataFromFileAsLines("day16.txt", true).ToArray()));
+			Assert.AreEqual(1651, Day16.SolvePartOne(Utils.GetDataFromFileAsLines("day16.txt", true).ToArray()));
 		}
 	}
 }

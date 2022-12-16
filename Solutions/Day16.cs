@@ -4,65 +4,100 @@ using System.Linq;
 
 namespace Advent_2022.Solutions
 {
-	public class Day16
+	public static class Day16
 	{
-
-		public static int SolvePartOne(string[] input)
+		private static void Parse(string[] input, out int start, out List<int[]> graph, out List<int> flows)
 		{
-			//parse input into valves and connections
-			//Timer remaining minutes int 30
-			Valve startingPoint;
-			List<Valve> valves = new List<Valve>();
-			int minutesRemaining = 30;
-			var connections = new Dictionary<string, string[]>();
-
+			List<(string valveName, int flowRate, string[] connections)> valves = new List<(string, int, string[])>();
+			graph = new List<int[]>();
+			flows = new List<int>();
 			foreach (string line in input)
 			{
 				string[] split = line.Split(';');
 
 				string valve = split[0].Substring(6, 2);
 				int flowRate = int.Parse(split[0].Split('=')[1]);
-				string[] sep = new[] {"valves ","valve "};
-				var connectedValves = split[1].Split(sep, StringSplitOptions.RemoveEmptyEntries)[1].Split(',');
-
-				Valve v = new Valve(valve, flowRate);
-				if (valve == "AA")
-					startingPoint = v;
-				connections.Add(valve,connectedValves);
+				string[] connectedValves = split[1].Split(new[] {"valves ", "valve "}, StringSplitOptions.RemoveEmptyEntries)[1].Split(", ");
+				valves.Add((valve, flowRate, connectedValves));
 			}
-			foreach (var valve in valves)
+
+			valves = valves.OrderByDescending(valve => valve.flowRate).ToList();
+
+
+			Dictionary<string, int> labelMap = new Dictionary<string, int>();
+
+
+			foreach ((string label, int flow, string[] _) in valves)
 			{
-				valve.DirectConnections.AddRange(valves.Where(v => connections[valve.Name].Contains(v.Name)));
+				labelMap[label] = labelMap.Count;
+				flows.Add(flow);
 			}
-			
-			//Solve
 
-			return 0;
+
+			foreach ((string _, int _, string[] connections) in valves)
+			{
+				graph.Add(connections.Select(s => labelMap[s]).ToArray());
+			}
+
+			start = labelMap["AA"];
 		}
 
-
-		private class Valve
+		public static int SolvePartOne(string[] input)
 		{
-			public string Name { get; }
+			Parse(input, out int start, out List<int[]> graph, out List<int> flows);
 
-			public int FlowRate { get; }
+			List<(int, int, int, int)> states = new List<(int, int, int, int)> {(start, 0, 0, 0)};
 
-			public List<Valve> DirectConnections { get; }
+			int[] best = new int[4194304];
 
-			public List<(Valve Valve, int Cost)> WorkingValves { get; }
+			int optimalPressureReleased = 0;
 
-			public Valve(string name, int flowRate)
+			for (int minute = 1; minute <= 29; minute++)
 			{
-				Name = name;
+				List<(int, int, int, int)> nstates = new List<(int, int, int, int)>();
+				foreach ((int n, int bits, int flow, int acc) in states)
+				{
+					int code = (n << 16) + bits;
+					int projected = acc + flow * (30 - minute + 1);
+					if (best[code] > projected + 1)
+					{
+						continue;
+					}
 
-				FlowRate = flowRate;
+					// open valve
+					if (flows[n] > 0 && (bits & (1 << n)) == 0)
+					{
+						int nbits = bits | (1 << n);
+						int nflow = flow + flows[n];
+						code = (n << 16) + nbits;
+						projected = acc + flow + nflow * (30 - minute);
+						if (projected + 1 > best[code])
+						{
+							nstates.Add((n, nbits, nflow, acc + flow));
+							best[code] = projected + 1;
+							if (projected > optimalPressureReleased)
+								optimalPressureReleased = projected;
+						}
+					}
 
-				DirectConnections = new List<Valve>();
+					foreach (int dst in graph[n])
+					{
+						code = (dst << 16) + bits;
+						projected = acc + flow * (30 - minute + 1);
+						if (projected + 1 > best[code])
+						{
+							nstates.Add((dst, bits, flow, acc + flow));
+							best[code] = projected + 1;
+							if (projected > optimalPressureReleased) 
+								optimalPressureReleased = projected;
+						}
+					}
+				}
 
-				WorkingValves = new List<(Valve Valve, int Cost)>();
+				states = nstates;
 			}
+
+			return optimalPressureReleased;
 		}
-		
-		
 	}
 }
