@@ -52,10 +52,10 @@ Solved in C#
     - [X] Part 1
     - [ ] Part 2
 - [ ] Day 17
-    - [ ] Part 1
+    - [X] Part 1
     - [ ] Part 2
 - [ ] Day 18
-    - [ ] Part 1
+    - [X] Part 1
     - [ ] Part 2
 - [ ] Day 19
     - [ ] Part 1

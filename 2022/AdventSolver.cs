@@ -42,9 +42,10 @@ namespace Advent_2022
 			Console.WriteLine("Day 15 Part 1: "  + Day15.SolvePartOne(Utils.GetDataFromFileAsLines("day15.txt").ToArray(),2000000));
 			Console.WriteLine("Day 15 Part 2: " + Day15.SolvePartTwo(Utils.GetDataFromFileAsLines("day15.txt").ToArray(),4000000));*/
 			//Console.WriteLine("Day 16 Part 1: " + Day16.SolvePartOne(Utils.GetDataFromFileAsLines("day16.txt").ToArray()));
-			Console.WriteLine("Day 17 Part 1: " + Day17.SolvePartOne(Utils.GetDataFromFile("day17.txt"),2022));
+			//Console.WriteLine("Day 17 Part 1: " + Day17.SolvePartOne(Utils.GetDataFromFile("day17.txt"),2022));
 
-			
+			Console.WriteLine("Day 18 Part 1: " + Day18.SolvePartOne(Utils.GetDataFromFileAsLines("day18.txt").ToArray()));
+
 			Console.ReadLine();
 		}
 	}
