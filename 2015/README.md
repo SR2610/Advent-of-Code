@@ -14,15 +14,15 @@ Solved in Python
 - [X] Day 3
     - [X] Part 1
     - [X] Part 2
-- [ ] Day 4
-    - [ ] Part 1
-    - [ ] Part 2
-- [ ] Day 5
-    - [ ] Part 1
-    - [ ] Part 2
-- [ ] Day 6
-    - [ ] Part 1
-    - [ ] Part 2
+- [X] Day 4
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 5
+    - [X] Part 1
+    - [X] Part 2
+- [X] Day 6
+    - [X] Part 1
+    - [X] Part 2
 - [ ] Day 7
     - [ ] Part 1
     - [ ] Part 2
