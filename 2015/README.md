@@ -32,9 +32,9 @@ Solved in Python
 - [X] Day 9
     - [X] Part 1
     - [X] Part 2
-- [ ] Day 10
-    - [ ] Part 1
-    - [ ] Part 2
+- [X] Day 10
+    - [X] Part 1
+    - [X] Part 2
 - [ ] Day 11
     - [ ] Part 1
     - [ ] Part 2
