@@ -3,9 +3,9 @@ Solutions for [Advent of Code 2023](https://adventofcode.com/2023).
 Solved in Python
 
 ## Progress
-- [ ] Day 1
-    - [ ] Part 1
-    - [ ] Part 2
+- [X] [Day 1](https://github.com/SR2610/Advent-of-Code/tree/main/2023/solutions/day_01.py)
+    - [X] Part 1
+    - [X] Part 2
 - [ ] Day 2
     - [ ] Part 1
     - [ ] Part 2
