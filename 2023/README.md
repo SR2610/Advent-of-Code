@@ -14,9 +14,9 @@ Solved in Python
 - [ ] Day 3
     - [ ] Part 1
     - [ ] Part 2
-- [ ] Day 4
-    - [ ] Part 1
-    - [ ] Part 2
+- [X] [Day 4](https://github.com/SR2610/Advent-of-Code/tree/main/2023/solutions/day_04.py)
+    - [X] Part 1
+    - [X] Part 2
 - [ ] Day 5
     - [ ] Part 1
     - [ ] Part 2
