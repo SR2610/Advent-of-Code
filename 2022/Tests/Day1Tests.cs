@@ -1,4 +1,5 @@
-﻿using Advent_2022.Solutions;
+﻿using System;
+using Advent_2022.Solutions;
 using NUnit.Framework;
 
 namespace Advent_2022.Tests
@@ -8,7 +9,8 @@ namespace Advent_2022.Tests
 		[Test]
 		public void PartOneTest()
 		{
-			Assert.AreEqual(24000, Day1.CombinedSolver(1, Utils.GetDataFromFileAsLines("day1.txt", true)));
+			Console.Out.WriteLine("Test123");
+			Assert.AreEqual(24001, Day1.CombinedSolver(1, Utils.GetDataFromFileAsLines("day1.txt", true)));
 		}
 
 		[Test]
